@@ -26,8 +26,8 @@ def get_user(uid):
 # 古树基本属性表
 class Basic_property(db.Model):
     __tablename__ = 'basic_property'
-    tree_code = db.Column(db.Integer, primary_key=True, unique=True)  # 这里需要添加唯一性约束，才可以与外键关联
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    tree_code = db.Column(db.Integer, primary_key=True, unique=True)  # 这里需要添加唯一性约束，才可以与外键关联
     zw_name = db.Column(db.VARCHAR(20))
     ld_name = db.Column(db.VARCHAR(20))
     bm_name = db.Column(db.VARCHAR(20))
@@ -82,7 +82,7 @@ class Dynamic_property(db.Model):
 class Geo_property(db.Model):
     __tablename__ = 'geo_property'
     dt_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    abcode = db.Column(db.Integer)
+    adcode = db.Column(db.Integer)
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     elevation = db.Column(db.Float)

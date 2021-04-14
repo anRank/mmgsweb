@@ -31,14 +31,15 @@ def add_basic_property():
     username = data["username"]
     is_signed = data["is_signed"]
     tree_code = data["tree_code"]
+    using = 1
     basic_property = Basic_property(tree_code=tree_code, zw_name=zw_name, ld_name=ld_name, bm_name=bm_name,
                                     family=family, genus=genus,
                                     town=town, village=village,
                                     place_name=place_name, palce=palce, placing_character=placing_character,
                                     owner=owner, level=level, character_code=character_code, jd_record=jd_record,
-                                    gh_unit=gh_unit, username=username, is_signed=is_signed)
+                                    gh_unit=gh_unit, username=username, is_signed=is_signed, using=using)
     db.session.add(basic_property)
-    db.session.commit()   # ok
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -46,7 +47,6 @@ def add_basic_property():
 @web.route('/add_dynamic_property', methods=["POST"])
 def add_dynamic_property():
     data = eval(request.data)
-    print(data)
     investigate_id = data["investigate_id"]
     describe = data["describe"]
     reason = data["reason"]
@@ -63,20 +63,21 @@ def add_dynamic_property():
     basis = data["basis"]
     history = data["history"]
     history_pic = data["history_pic"]
-    conserve_status = ''.join(data["conserve_status"]) # !
-    yhfz_status = ''.join(data["yhfz_status"])         # !
+    conserve_status = ' '.join(data["conserve_status"])  # !
+    yhfz_status = ' '.join(data["yhfz_status"])  # !
     username = data["username"]
     # investigate_time = data["investigate_time"]      # 时间格式待定
     tree_code = data["tree_code"]
+    using = 1
     dynamic_property = Dynamic_property(investigate_id=investigate_id, describe=describe,
                                         reason=reason, affect_factor=affect_factor,
                                         height=height, bust=bust, c_average=c_average, c_dx=c_dx, c_nb=c_nb,
                                         g_vigor=g_vigor, g_environment=g_environment,
                                         real_age=real_age, estimate_age=estimate_age, basis=basis, history=history,
                                         history_pic=history_pic, conserve_status=conserve_status,
-                                        yhfz_status=yhfz_status, username=username, tree_code=tree_code)
+                                        yhfz_status=yhfz_status, username=username, tree_code=tree_code, using=using)
     db.session.add(dynamic_property)
-    db.session.commit()   # ok
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -92,9 +93,11 @@ def add_geo_property():
     slope = data["slope"]
     slope_position = data["slope_position"]
     tree_code = data["tree_code"]
-    geo_property = Geo_property()
-    # db.session.add(geo_property)
-    # db.session.commit()  # ok
+    using = 1
+    geo_property = Geo_property(adcode=adcode, longitude=longitude, latitude=latitude, elevation=elevation, aspect=aspect, slope=slope,
+                                slope_position=slope_position, tree_code=tree_code, using=using)
+    db.session.add(geo_property)
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -106,7 +109,7 @@ def add_pic_record():
     explain = data["explain"]
     update_time = data["update_time"]
     tree_code = data["tree_code"]
-    using = True
+    using = 1
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     pic_record = Pic_record(tree_code=tree_code, path=path, explain=explain, update_time=update_time, using=using)
     db.session.add(pic_record)
@@ -126,10 +129,11 @@ def add_tree_brand():
     update_time = data["update_time"]
     tree_code = data["tree_code"]
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+    using = 1
     tree_brand = Tree_brand(tree_code=tree_code, has_brand=has_brand, is_right=is_right, content=content,
                             brand_right=brand_right,
-                            brand_pic=brand_pic, update_time=update_time)
-    db.session.add(tree_brand)    # ok
+                            brand_pic=brand_pic, update_time=update_time, using=using)
+    db.session.add(tree_brand)  # ok
     db.session.commit()
     return 'commit success'
 
@@ -141,7 +145,7 @@ def add_ge_analysis():
     elevation = data["elevation"]
     habitat_type = data["habitat_type"]
     plain_type = data["plain_type"]
-    plain_type = ''.join(plain_type)
+    plain_type = ' '.join(plain_type)
     highland_type = data["highland_type"]
     aspect = data["aspect"]
     slope = data["slope"]
@@ -181,15 +185,22 @@ def add_ge_analysis():
     using = True
     tree_code = data["tree_code"]
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-    ge_analysis = GE_analysis(tree_code=tree_code, elevation=elevation, habitat_type=habitat_type, plain_type=plain_type, highland_type=highland_type,
-                              aspect=aspect, slope=slope, slope_position=slope_position, is_pollution=is_pollution, varia=varia, soil_texture=soil_texture,
-                              soil_capacity=soil_capacity, organic_content=organic_content, sample_result=sample_result, hydrolyze_N=hydrolyze_N,
-                              valid_P=valid_P, rapid_K=rapid_K, saltness=saltness, ec_value=ec_value, ph_value=ph_value, is_buried=is_buried, buried_depth=buried_depth,
-                              root_water=root_water, protect_E=protect_E, protect_W=protect_W, protect_S=protect_S, protect_N=protect_N, protect_pic=protect_pic,
-                              other_plants=other_plants, evaluation=evaluation, envoriment_problem=envoriment_problem, has_structures=has_structures, structures_type=structures_type,
-                              structures_affect=structures_affect, nutrient_status=nutrient_status, pic_path=pic_path, update_time=update_time, using=using)
+    ge_analysis = GE_analysis(tree_code=tree_code, elevation=elevation, habitat_type=habitat_type,
+                              plain_type=plain_type, highland_type=highland_type,
+                              aspect=aspect, slope=slope, slope_position=slope_position, is_pollution=is_pollution,
+                              varia=varia, soil_texture=soil_texture,
+                              soil_capacity=soil_capacity, organic_content=organic_content, sample_result=sample_result,
+                              hydrolyze_N=hydrolyze_N,
+                              valid_P=valid_P, rapid_K=rapid_K, saltness=saltness, ec_value=ec_value, ph_value=ph_value,
+                              is_buried=is_buried, buried_depth=buried_depth,
+                              root_water=root_water, protect_E=protect_E, protect_W=protect_W, protect_S=protect_S,
+                              protect_N=protect_N, protect_pic=protect_pic,
+                              other_plants=other_plants, evaluation=evaluation, envoriment_problem=envoriment_problem,
+                              has_structures=has_structures, structures_type=structures_type,
+                              structures_affect=structures_affect, nutrient_status=nutrient_status, pic_path=pic_path,
+                              update_time=update_time, using=using)
     db.session.add(ge_analysis)
-    db.session.commit()   # ok
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -208,10 +219,12 @@ def add_gp_analysis():
     update_time = data["update_time"]
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     tree_code = data["tree_code"]
-    gp_analysis = GP_analysis(shoot_type=shoot_type, normal_blade_rate=normal_blade_rate, blade_persistent=blade_persistent,
-                              growth_vigor=growth_vigor, chlorophyll=chlorophyll, Fo=Fo, Fm=Fm, update_time=update_time, tree_code=tree_code)
+    gp_analysis = GP_analysis(shoot_type=shoot_type, normal_blade_rate=normal_blade_rate,
+                              blade_persistent=blade_persistent,
+                              growth_vigor=growth_vigor, chlorophyll=chlorophyll, Fo=Fo, Fm=Fm, update_time=update_time,
+                              tree_code=tree_code)
     db.session.add(gp_analysis)
-    db.session.commit()   # ok
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -219,8 +232,8 @@ def add_gp_analysis():
 @web.route('/add_fzbh_analysis', methods=["POST"])
 def add_fzbh_analysis():
     data = eval(request.data)
-    protect = ''.join(data["protect"])
-    soil_improve = ''.join(data["soil_improve"])
+    protect = ' '.join(data["protect"])
+    soil_improve = ' '.join(data["soil_improve"])
     is_block = data["is_block"]
 
     fit_status = data["fit_status"]
@@ -257,14 +270,20 @@ def add_fzbh_analysis():
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     using = True
     tree_code = data["tree_code"]
-    fzbh_analysis = Fzbh_analysis(protect=protect, soil_improve=soil_improve, is_block=is_block, fit_status=fit_status, drain_hole=drain_hole,
-                                  tech_level=tech_level, outer=outer, clean_status=clean_status, antiseptic=antiseptic, is_support=is_support,
-                                  hard_support=hard_support, protaging=protaging, steady=steady, support_type=support_type, support_isrea=support_isrea,
-                                  hoop_status=hoop_status, rubber_is=rubber_is, hoop_is=hoop_is, has_ditch=has_ditch, ditch_type=ditch_type,
-                                  ditch_num=ditch_num, ditch_width=ditch_width, ditch_length=ditch_length, pipe_num=pipe_num, matrix_constitute=matrix_constitute,
-                                  position_is=position_is, capillary_roots=capillary_roots, protect_eval=protect_eval, pic=pic, update_time=update_time, using=using, tree_code=tree_code)
+    fzbh_analysis = Fzbh_analysis(protect=protect, soil_improve=soil_improve, is_block=is_block, fit_status=fit_status,
+                                  drain_hole=drain_hole,
+                                  tech_level=tech_level, outer=outer, clean_status=clean_status, antiseptic=antiseptic,
+                                  is_support=is_support,
+                                  hard_support=hard_support, protaging=protaging, steady=steady,
+                                  support_type=support_type, support_isrea=support_isrea,
+                                  hoop_status=hoop_status, rubber_is=rubber_is, hoop_is=hoop_is, has_ditch=has_ditch,
+                                  ditch_type=ditch_type,
+                                  ditch_num=ditch_num, ditch_width=ditch_width, ditch_length=ditch_length,
+                                  pipe_num=pipe_num, matrix_constitute=matrix_constitute,
+                                  position_is=position_is, capillary_roots=capillary_roots, protect_eval=protect_eval,
+                                  pic=pic, update_time=update_time, using=using, tree_code=tree_code)
     db.session.add(fzbh_analysis)
-    db.session.commit()   # ok
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -296,12 +315,15 @@ def add_stss_analysis():
     damage_status = data["damage_status"]
     update_time = data["update_time"]
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-    stss_analysis = Stss_analysis(base1=base1, pic_base1=pic_base1, base2=base2, pic_base2=pic_base2, base3=base3, pic_base3=pic_base3,
-                                  trunk1=trunk1, pic_trunk1=pic_trunk1, trunk2=trunk2, pic_trunk2=pic_trunk2, trunk3=trunk3, pic_trunk3=pic_trunk3,
-                                  skeleton1=skeleton1, pic_ske1=pic_ske1, skeleton2=skeleton2, pic_ske2=pic_ske2, skeleton3=skeleton3, pic_ske3=pic_ske3,
+    stss_analysis = Stss_analysis(base1=base1, pic_base1=pic_base1, base2=base2, pic_base2=pic_base2, base3=base3,
+                                  pic_base3=pic_base3,
+                                  trunk1=trunk1, pic_trunk1=pic_trunk1, trunk2=trunk2, pic_trunk2=pic_trunk2,
+                                  trunk3=trunk3, pic_trunk3=pic_trunk3,
+                                  skeleton1=skeleton1, pic_ske1=pic_ske1, skeleton2=skeleton2, pic_ske2=pic_ske2,
+                                  skeleton3=skeleton3, pic_ske3=pic_ske3,
                                   damage_status=damage_status, update_time=update_time)
     db.session.add(stss_analysis)
-    db.session.commit()   # ok
+    db.session.commit()  # ok
     return 'commit success'
 
 
@@ -331,12 +353,15 @@ def add_qxkf_detect():
     qxkf_eval = data["qxkf_eval"]
     update_time = data["update_time"]
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-    qxkf_detect = Qxkf_detect(base_loose=base_loose, pic_1=pic_1, root_rot=root_rot, pic_2=pic_2, root_bare=root_bare,
-                              bare_length=bare_length, pic_3=pic_3, has_absound=has_absound, trunk_inclined=trunk_inclined,
+    tree_code = data["tree_code"]
+    qxkf_detect = Qxkf_detect(tree_code=tree_code, base_loose=base_loose, pic_1=pic_1, root_rot=root_rot, pic_2=pic_2,
+                              root_bare=root_bare,
+                              bare_length=bare_length, pic_3=pic_3, has_absound=has_absound,
+                              trunk_inclined=trunk_inclined,
                               pic_4=pic_4, has_abbranch=has_abbranch, pic_5=pic_5, lopsided=lopsided, pic_6=pic_6,
                               deadwood=deadwood, pic_7=pic_7, twig=twig, pic_8=pic_8, empty_rot_rate=empty_rot_rate,
                               qxkf_eval=qxkf_eval, update_time=update_time)
-    db.session.add(qxkf_detect)   # ok
+    db.session.add(qxkf_detect)  # ok
     db.session.commit()
     return 'commit success'
 
@@ -373,11 +398,16 @@ def add_bch_analysis():
 
     total_eval = data["total_eval"]
     update_time = data["update_time"]
+    tree_code = data["tree_code"]
     update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-    bch_analysis = Bch_analysis(bmoth_status=bmoth_status, bmoth_name=bmoth_name, bdisease_status=bdisease_status, bdisease_name=bdisease_name, base_pic=base_pic,
-                                tmoth_status=tmoth_status, tmoth_name=tmoth_name, tdisease_status=tdisease_status, tdisease_name=tdisease_name, trunk_pic=trunk_pic,
-                                smoth_status=smoth_status, smoth_name=smoth_name, sdisease_status=sdisease_status, sdisease_name=sdisease_name, ske_pic=ske_pic,
-                                blade_status=blade_status, blade_name=blade_name, blade_pic=blade_pic, branch_status=branch_status, branch_name=branch_name,
+    bch_analysis = Bch_analysis(tree_code=tree_code, bmoth_status=bmoth_status, bmoth_name=bmoth_name,
+                                bdisease_status=bdisease_status, bdisease_name=bdisease_name, base_pic=base_pic,
+                                tmoth_status=tmoth_status, tmoth_name=tmoth_name, tdisease_status=tdisease_status,
+                                tdisease_name=tdisease_name, trunk_pic=trunk_pic,
+                                smoth_status=smoth_status, smoth_name=smoth_name, sdisease_status=sdisease_status,
+                                sdisease_name=sdisease_name, ske_pic=ske_pic,
+                                blade_status=blade_status, blade_name=blade_name, blade_pic=blade_pic,
+                                branch_status=branch_status, branch_name=branch_name,
                                 branch_pic=branch_pic, total_eval=total_eval, update_time=update_time)
     db.session.add(bch_analysis)
     db.session.commit()
