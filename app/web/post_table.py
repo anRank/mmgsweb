@@ -141,6 +141,7 @@ def add_ge_analysis():
     elevation = data["elevation"]
     habitat_type = data["habitat_type"]
     plain_type = data["plain_type"]
+    plain_type = ''.join(plain_type)
     highland_type = data["highland_type"]
     aspect = data["aspect"]
     slope = data["slope"]
@@ -187,8 +188,8 @@ def add_ge_analysis():
                               root_water=root_water, protect_E=protect_E, protect_W=protect_W, protect_S=protect_S, protect_N=protect_N, protect_pic=protect_pic,
                               other_plants=other_plants, evaluation=evaluation, envoriment_problem=envoriment_problem, has_structures=has_structures, structures_type=structures_type,
                               structures_affect=structures_affect, nutrient_status=nutrient_status, pic_path=pic_path, update_time=update_time, using=using)
-    # db.session.add(ge_analysis)
-    # db.session.commit()   # no ok
+    db.session.add(ge_analysis)
+    db.session.commit()   # ok
     return 'commit success'
 
 
@@ -350,7 +351,7 @@ def add_bch_analysis():
     bdisease_name = data["bdisease_name"]
     base_pic = data["base_pic"]
 
-    tmoth_status = data["tmoth_status6"]
+    tmoth_status = data["tmoth_status"]
     tmoth_name = data["tmoth_name"]
     tdisease_status = data["tdisease_status"]
     tdisease_name = data["tdisease_name"]
@@ -372,6 +373,7 @@ def add_bch_analysis():
 
     total_eval = data["total_eval"]
     update_time = data["update_time"]
+    update_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     bch_analysis = Bch_analysis(bmoth_status=bmoth_status, bmoth_name=bmoth_name, bdisease_status=bdisease_status, bdisease_name=bdisease_name, base_pic=base_pic,
                                 tmoth_status=tmoth_status, tmoth_name=tmoth_name, tdisease_status=tdisease_status, tdisease_name=tdisease_name, trunk_pic=trunk_pic,
                                 smoth_status=smoth_status, smoth_name=smoth_name, sdisease_status=sdisease_status, sdisease_name=sdisease_name, ske_pic=ske_pic,
