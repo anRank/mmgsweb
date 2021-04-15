@@ -94,8 +94,8 @@ def add_geo_property():
     slope_position = data["slope_position"]
     tree_code = data["tree_code"]
     using = 1
-    geo_property = Geo_property(adcode=adcode, longitude=longitude, latitude=latitude, elevation=elevation, aspect=aspect, slope=slope,
-                                slope_position=slope_position, tree_code=tree_code, using=using)
+    geo_property = Geo_property(tree_code=tree_code, adcode=adcode, longitude=longitude, latitude=latitude, elevation=elevation, aspect=aspect, slope=slope,
+                                slope_position=slope_position, using=using)
     db.session.add(geo_property)
     db.session.commit()  # ok
     return 'commit success'
