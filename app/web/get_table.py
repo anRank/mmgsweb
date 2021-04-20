@@ -10,7 +10,7 @@ from models.table import Basic_property, Dynamic_property, Geo_property, Tree_br
 def get_trees_info():
     # 查询结果集合
     res = []
-    basic_trees = Basic_property.query.all()
+    basic_trees = Basic_property.query.filter_by(using=1).all()
     for tree in basic_trees:
         # 每棵树的不同属性集合
         tree_info = {tree.tree_code: []}
@@ -29,7 +29,7 @@ def get_trees_info():
         res.append(tree_info)
 
         # 动态属性
-        dp = Dynamic_property.query.filter_by(tree_code=tree.tree_code).first()
+        dp = Dynamic_property.query.filter_by(tree_code=tree.tree_code, using=1).first()
         dynamic_property = {"dynamic_property": []}
         dynamic_property["dynamic_property"].append(
             {"id": dp.id, "describe": dp.describe, "reason": dp.reason, "affect_factor": dp.affect_factor,
@@ -41,7 +41,7 @@ def get_trees_info():
         tree_info[tree.tree_code].append(dynamic_property)
 
         # 地理属性
-        geo_p = Geo_property.query.filter_by(tree_code=tree.tree_code).first()
+        geo_p = Geo_property.query.filter_by(tree_code=tree.tree_code, using=1).first()
         geo_property = {"geo_property": []}
         geo_property["geo_property"].append(
             {"dt_id": geo_p.dt_id, "adcode": geo_p.adcode, "longitude": geo_p.longitude, "latitude": geo_p.latitude,
@@ -51,7 +51,7 @@ def get_trees_info():
         tree_info[tree.tree_code].append(geo_property)
 
         # 图片记录
-        pics = Pic_record.query.filter_by(tree_code=tree.tree_code).order_by("update_time").all()
+        pics = Pic_record.query.filter_by(tree_code=tree.tree_code, using=1).order_by("update_time").all()
         pic = pics[len(pics) - 1]
         pic_record = {"pic_record": []}
         pic_record["pic_record"].append(
@@ -60,7 +60,7 @@ def get_trees_info():
         tree_info[tree.tree_code].append(pic_record)
 
         # 树牌记录
-        brands = Tree_brand.query.filter_by(tree_code=tree.tree_code).order_by("update_time").all()
+        brands = Tree_brand.query.filter_by(tree_code=tree.tree_code, using=1).order_by("update_time").all()
         brand = brands[len(brands)-1]
         tree_brand = {"tree_brand": []}
         tree_brand["tree_brand"].append({"id": brand.id, "has_brand": brand.has_brand, "is_right": brand.is_right, "brand_pic": brand.brand_pic,
@@ -73,7 +73,7 @@ def get_trees_info():
 def get_tree_info(tree_code):
     res = []
     # 基础属性
-    tree = Basic_property.query.filter_by(tree_code=tree_code).first()
+    tree = Basic_property.query.filter_by(tree_code=tree_code, using=1).first()
     basic_property = {"basic_property": []}
     basic_property["basic_property"].append(
         {"id": tree.id, "tree_code": tree.tree_code, "zw_name": tree.zw_name, "ld_name": tree.ld_name,
@@ -85,7 +85,7 @@ def get_tree_info(tree_code):
          "is_signed": tree.is_signed, "using": tree.using})
     res.append(basic_property)
     # 动态属性
-    dp = Dynamic_property.query.filter_by(tree_code=tree_code).first()
+    dp = Dynamic_property.query.filter_by(tree_code=tree_code, using=1).first()
     dynamic_property = {"dynamic_property": []}
     dynamic_property["dynamic_property"].append(
         {"id": dp.id, "describe": dp.describe, "reason": dp.reason, "affect_factor": dp.affect_factor,
@@ -95,7 +95,7 @@ def get_tree_info(tree_code):
          "conserve_status": dp.conserve_status, "yhfz_status": dp.yhfz_status, "investigate_id": dp.investigate_id,
          "using": dp.using, "tree_code": dp.tree_code})
     res.append(dynamic_property)
-    geo_p = Geo_property.query.filter_by(tree_code=tree_code).first()
+    geo_p = Geo_property.query.filter_by(tree_code=tree_code, using=1).first()
     geo_property = {"geo_property": []}
     geo_property["geo_property"].append(
         {"dt_id": geo_p.dt_id, "adcode": geo_p.adcode, "longitude": geo_p.longitude, "latitude": geo_p.latitude,
@@ -103,14 +103,14 @@ def get_tree_info(tree_code):
          "slope_position": geo_p.slope_position,
          "using": geo_p.using, "tree_code": geo_p.tree_code})
     res.append(geo_property)
-    pics = Pic_record.query.filter_by(tree_code=tree_code).order_by("update_time").all()
+    pics = Pic_record.query.filter_by(tree_code=tree_code, using=1).order_by("update_time").all()
     pic = pics[len(pics) - 1]
     pic_record = {"pic_record": []}
     pic_record["pic_record"].append(
         {"pic_id": pic.pic_id, "path": pic.path, "explain": pic.explain, "update_time": pic.update_time,
          "using": pic.using, "tree_code": pic.tree_code})
     res.append(pic_record)
-    brands = Tree_brand.query.filter_by(tree_code=tree_code).order_by("update_time").all()
+    brands = Tree_brand.query.filter_by(tree_code=tree_code, using=1).order_by("update_time").all()
     brand = brands[len(brands) - 1]
     tree_brand = {"tree_brand": []}
     tree_brand["tree_brand"].append(
